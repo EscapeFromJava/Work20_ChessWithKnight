@@ -1,61 +1,92 @@
-﻿#include <iostream>
-#include <string>
-using namespace std;
-
-int columnNameToNumber(char c);
-string coordsToString(int x, int y);
-bool checkByBishop(int x, int y, int Bx, int By);
-bool checkByQueen(int x, int y, int Qx, int Qy);
-bool checkByKnight(int x, int y, int Kx, int Ky);
+﻿#include "Header.h"
 
 int main()
 {
     setlocale(LC_ALL, "rus");
-    int y;
-    char c;
-    cout << "Введите позицию черного короля: " << endl;
-    cin >> c;
-    cin >> y;
-    int x = columnNameToNumber(c);
-    coordsToString(x, y);
-    if (checkByBishop(x, y, 1, 1)) 
-        cout << "Шах от Ладьи" << endl;
-    if (checkByKnight(x, y, 1, 6))
-        cout << "Шах от Коня" << endl;
-    else
+    cout << "Сколько белых фигур выставить на поле? ";
+    int numberOfFigures;
+    cin >> numberOfFigures;
+    cout << "Расставьте белые фигуры: " << endl;
+    string history, lastInput;
+    ChessFigure WhiteByshop, WhiteQueen, WhiteKnight;
+    int count = 1, volWhiteByshop = 0, volWhiteQueen = 0, volWhiteKnight = 0;
+    while (count != (numberOfFigures + 1)) {
+        cout << "Выберите " << count << " шахматную фигуру [1 - Слон, 2 - Королева, 3 - Конь]: ";
+        int x;
+        cin >> x;
+        if (x == 1) {
+            if (volWhiteByshop == 2) {
+                cout << "Превышен лимит выбранной фигуры" << endl;
+                continue;
+            }
+            WhiteByshop = inputChessFigure();
+            lastInput = WhiteByshop.x + to_string(WhiteByshop.y);
+            if (history.find(lastInput) != string::npos) {
+                cout << "Поле занято другой фигурой" << endl;
+                continue;
+            }
+            count++;
+            volWhiteByshop++;
+        }
+        if (x == 2) {
+            if (volWhiteQueen == 1) {
+                cout << "Превышен лимит выбранной фигуры" << endl;
+                continue;
+            }
+            WhiteQueen = inputChessFigure();
+            lastInput = WhiteQueen.x + to_string(WhiteQueen.y);
+            if (history.find(lastInput) != string::npos) {
+                cout << "Поле занято другой фигурой" << endl;
+                continue;
+            }
+            count++;
+            volWhiteQueen++;
+        }
+        if (x == 3) {
+            if (volWhiteKnight == 2) {
+                cout << "Превышен лимит выбранной фигуры" << endl;
+                continue;
+            }
+            WhiteKnight = inputChessFigure();
+            lastInput = WhiteKnight.x + to_string(WhiteKnight.y);
+            if (history.find(lastInput) != string::npos) {
+                cout << "Поле занято другой фигурой" << endl;
+                continue;
+            }
+            count++;
+            volWhiteKnight;
+        } 
+        history += lastInput;
+    }
+    ChessFigure BlackKing;
+    bool flagKing = false;
+    while (flagKing == false) {
+        cout << "Укажите позицию черного короля: " << endl;
+        BlackKing = inputChessFigure();
+        lastInput = BlackKing.x + to_string(BlackKing.y);
+        if (history.find(lastInput) != string::npos) {
+            cout << "Поле занято другой фигурой" << endl;
+            continue;
+        }
+        flagKing = true;
+    }
+    bool flag = true;
+    if (checkByBishop(BlackKing.x, BlackKing.y, WhiteByshop.x, WhiteByshop.y)) {
+        cout << "Шах от белого слона" << endl;
+        flag = false;
+    }
+    if (checkByQueen(BlackKing.x, BlackKing.y, WhiteQueen.x, WhiteQueen.y)) {
+        cout << "Шах от белой королевы" << endl;
+        flag = false;
+    }
+    if (checkByKnight(BlackKing.x, BlackKing.y, WhiteKnight.x, WhiteKnight.y)) {
+        cout << "Шах от белого коня" << endl;
+        flag = false;
+    }
+    if (flag) {
         cout << "Шаха нет" << endl;
+    }
     return 0;
 }
 
 
-int columnNameToNumber(char c)
-{
-    int x;
-    return 1 + c - (c <= 'H' ? 'A' : 'a');
-}
-
-string coordsToString(int x, int y)
-{
-    char c = 'A' + x - 1;
-    string s = "";
-    s += c;
-    return s + to_string(y);
-}
-
-bool checkByQueen(int x, int y, int Qx, int Qy)
-{
-    return (x == Qx || y == Qy || abs(Qy - y) == abs(Qx - x));
-}
-
-bool checkByBishop(int x, int y, int Bx, int By)
-{
-    return (abs(By - y) == abs(Bx - x));
-}
-
-bool checkByKnight(int x, int y, int Kx, int Ky)
-{
-    return ((x == Kx + 1) && (y == Ky + 2) || (x == Kx + 2) && (y == Ky + 1) || 
-            (x == Kx + 2) && (y == Ky - 1) || (x == Kx + 1) && (y == Ky - 2) || 
-            (x == Kx - 1) && (y == Ky - 2) || (x == Kx - 2) && (y == Ky - 1) || 
-            (x == Kx - 2) && (y == Ky + 1) || (x == Kx - 1) && (y == Ky + 2));
-}
