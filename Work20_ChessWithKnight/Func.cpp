@@ -1,8 +1,8 @@
-#include "Header.h"
+ï»¿#include "Header.h"
 
 ChessFigure inputChessFigure()
 {
-	cout << "Óêàæèòå ïîçèöèþ: ";
+	cout << "Ð£ÐºÐ°Ð¶Ð¸Ñ‚Ðµ Ð¿Ð¾Ð·Ð¸Ñ†Ð¸ÑŽ: ";
 	ChessFigure cf;
 	cin >> cf.x >> cf.y;
     int x = columnNameToNumber(cf.x);
