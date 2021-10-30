@@ -41,3 +41,12 @@ bool checkByKnight(int x, int y, int Kx, int Ky)
         (x == Kx - 1) && (y == Ky - 2) || (x == Kx - 2) && (y == Ky - 1) ||
         (x == Kx - 2) && (y == Ky + 1) || (x == Kx - 1) && (y == Ky + 2));
 }
+
+void printArr(ChessFigure arr[], int size)
+{
+    string s;
+    for (int i = 0; i < size; i++) {
+        s = "Фигура " + arr[i].name + " имеет расположение: \t" + arr[i].x + " " + to_string(arr[i].y);
+        cout << s << endl;
+    }
+}
